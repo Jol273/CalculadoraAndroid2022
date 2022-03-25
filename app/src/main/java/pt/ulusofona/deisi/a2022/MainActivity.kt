@@ -13,9 +13,13 @@ class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
     private lateinit var binding: ActivityMainBinding
 
-    //private val operations = mutableListOf<String>("1+1=2")
+    //private val operations = mutableListOf("1+1=2")
     private val operations = mutableListOf(OperationUi("1+1","2"))
-    private val adapter = HistoryAdapter(::onOperationClick,::onLongOperationClick)
+    private val adapter = HistoryAdapter(
+            ::onOperationClick,
+            ::onLongOperationClick
+    )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "o método onCreate foi invocado")
@@ -34,7 +38,10 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         binding.rvHistoric?.layoutManager = LinearLayoutManager(this)
         binding.rvHistoric?.adapter = adapter
+        adapter.updateItems(operations)
 
+        binding.button0.setOnClickListener { onClickSymbol("0") }
+        binding.button00?.setOnClickListener { onClickSymbol("00") }
         binding.button1.setOnClickListener { onClickSymbol("1") }
         binding.button2.setOnClickListener { onClickSymbol("2") }
         binding.button3.setOnClickListener { onClickSymbol("3") }
@@ -96,7 +103,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveResult(expression: String, result: String){
-
+        /*operations.add("$expression=$result")
+        adapter.updateItems(operations)*/
         operations.add(OperationUi(expression, result))
         adapter.updateItems(operations)
     }

@@ -26,7 +26,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_historic"
             android:layout_weight="2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
+            android:background="@color/white"
             android:layout_height="match_parent"
             android:padding="16dp"
             />
@@ -217,7 +218,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/gray"
-                    android:text="@string/button_8"
+                    android:text="@string/button_0"
                     />
 
                 <Button
