@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">Calculadora</string>
+    <string name="calculator">Calculadora</string>
     <string name="submit">Submeter</string>
     <string name="cancel">Cancelar</string>
+    <string name="history">Histórico</string>
+    <string name="drawer_open">Aberto</string>
+    <string name="drawer_close">Fechado</string>
     <string name="button_equals">=</string>
     <string name="button_adition">+</string>
     <string name="button_2">2</string>
@@ -21,4 +25,7 @@
     <string name="button_9">9</string>
     <string name="button_7">7</string>
     <string name="button_00">00</string>
+    <string name="expression">Expressão:</string>
+    <string name="result">Resultado:</string>
+    <string name="creationDate">Data de criação:</string>
 </resources>

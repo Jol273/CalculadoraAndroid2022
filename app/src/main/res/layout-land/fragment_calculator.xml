@@ -15,7 +15,7 @@
         android:padding="16dp"
         android:textSize="40sp"
         android:text="@string/button_0"
-    />
+        />
 
     <LinearLayout
         android:weightSum="10"
@@ -54,7 +54,7 @@
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/gray"
                     android:text="@string/button_8"
-                />
+                    />
 
                 <Button
                     android:id="@+id/button_9"

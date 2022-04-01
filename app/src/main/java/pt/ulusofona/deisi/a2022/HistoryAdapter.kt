@@ -1,6 +1,7 @@
 package pt.ulusofona.deisi.a2022
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,8 +10,7 @@ import pt.ulusofona.deisi.a2022.databinding.ItemExpressionBinding
 class HistoryAdapter(
         private val onOperationClick: (String) -> Unit,
         private val onLongOperationClick: (String) -> Unit,
-        private var items: List<OperationUi> = listOf()
-        //private var items: List<String> = listOf("1+1 = 2")
+        private var items: ArrayList<OperationUi>? = null
 
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
@@ -28,26 +28,22 @@ class HistoryAdapter(
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.itemView.setOnClickListener{
-            onOperationClick(items[position].toString())
+            onOperationClick(items?.get(position).toString())
         }
-        val parts = items[position].toString()?.split("=")
+        val parts = items?.get(position).toString().split("=")
         holder.binding.textExpression.text = parts?.get(0)
         holder.binding.textResult.text = parts?.get(1)
         holder.itemView.setOnLongClickListener{
-            onLongOperationClick(items[position].callTimeStamp())
+            onLongOperationClick(items?.get(position)!!.callTimeStamp())
             true
         }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = items!!.size
 
-    fun updateItems(items: List<OperationUi>){
+    fun updateItems(items: ArrayList<OperationUi>){
         this.items = items
         notifyDataSetChanged()
     }
 
-    /*fun updateItems(items: List<String>){
-        this.items = items
-        notifyDataSetChanged()
-    }*/
 }
