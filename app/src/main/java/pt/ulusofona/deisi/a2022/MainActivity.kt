@@ -21,9 +21,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //operations.add(OperationUi("1+1","2.0"))
 
         if(!screenRotated(savedInstanceState)){
-            NavigationManager.goToCalculatorFragment(supportFragmentManager)
+            NavigationManager.goToCalculatorFragment(supportFragmentManager, operations)
+            //NavigationManager.goToCalculatorFragment(supportFragmentManager)
         }
     }
 
@@ -31,7 +33,9 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         setSupportActionBar(binding.toolbar)
         setupDrawerMenu()
-        NavigationManager.goToCalculatorFragment(supportFragmentManager)
+        operations.add(OperationUi("1+1","2.0"))
+        operations.add(OperationUi("1*3","3.0"))
+        NavigationManager.goToCalculatorFragment(supportFragmentManager, operations)
     }
 
     private fun screenRotated(savedInstanceState: Bundle?): Boolean {
@@ -51,15 +55,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClickNavigationItem(item: MenuItem): Boolean{
+
         when(item.itemId){
             R.id.nav_calculator ->
                 NavigationManager.goToCalculatorFragment(
-                    supportFragmentManager
+                        supportFragmentManager, operations
                 )
-            R.id.nav_history ->
+            R.id.nav_history -> {
                 NavigationManager.goToHistoryFragment(
                         supportFragmentManager, operations
                 )
+            }
         }
         binding.drawer.closeDrawer(GravityCompat.START)
         return true

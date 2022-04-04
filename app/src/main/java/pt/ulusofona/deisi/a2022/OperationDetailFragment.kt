@@ -24,17 +24,13 @@ class OperationDetailFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_operation_detail, container, false)
         binding = FragmentOperationDetailBinding.bind(view)
         return binding.root
     }
 
-    /*override fun onStart() {
-        super.onStart()
-        //parentFragment.getData
-    }*/
 
     companion object {
         @JvmStatic
@@ -42,6 +38,7 @@ class OperationDetailFragment : Fragment() {
             OperationDetailFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_PARAM1, param1)
+                    parentFragment
                 }
             }
     }

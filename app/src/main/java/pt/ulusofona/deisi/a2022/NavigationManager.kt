@@ -12,10 +12,15 @@ object NavigationManager {
         transition.commit()
     }
 
-    fun goToCalculatorFragment(fm: FragmentManager){
-        placeFragment(fm, CalculatorFragment())
+    fun goToCalculatorFragment(fm: FragmentManager, operations: ArrayList<OperationUi>){
+        //placeFragment(fm, CalculatorFragment.newInstance(operations))
+        placeFragment(fm, CalculatorFragment.newInstance(operations))
     }
 
+    /*fun goToCalculatorFragment(fm: FragmentManager){
+        //placeFragment(fm, CalculatorFragment.newInstance(operations))
+        placeFragment(fm, CalculatorFragment())
+    }*/
 
 
     fun goToHistoryFragment(fm: FragmentManager, operations: ArrayList<OperationUi>){

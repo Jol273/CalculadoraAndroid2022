@@ -10,9 +10,8 @@ import pt.ulusofona.deisi.a2022.databinding.ItemExpressionBinding
 class HistoryAdapter(
         private val onOperationClick: (String) -> Unit,
         private val onLongOperationClick: (String) -> Unit,
-        private var items: ArrayList<OperationUi>? = null
-
-) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+        private var items: ArrayList<OperationUi>?
+        ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     class HistoryViewHolder(val binding: ItemExpressionBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -31,8 +30,8 @@ class HistoryAdapter(
             onOperationClick(items?.get(position).toString())
         }
         val parts = items?.get(position).toString().split("=")
-        holder.binding.textExpression.text = parts?.get(0)
-        holder.binding.textResult.text = parts?.get(1)
+        holder.binding.textExpression.text = parts[0]
+        holder.binding.textResult.text = parts[1]
         holder.itemView.setOnLongClickListener{
             onLongOperationClick(items?.get(position)!!.callTimeStamp())
             true

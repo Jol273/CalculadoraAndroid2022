@@ -18,7 +18,7 @@ class HistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentHistoryBinding
     private val TAGHISTORY = HistoryFragment::class.java.simpleName
-    private var operations: ArrayList<OperationUi>? = null
+    private var operations: ArrayList<OperationUi> = ArrayList<OperationUi>()
     private val adapter = HistoryAdapter(
             ::onOperationClick,
             ::onLongOperationClick,
@@ -27,13 +27,15 @@ class HistoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             operations = it.getParcelableArrayList(ARG_OPERATIONS)!!
-        }
+            //Log.i(TAGHISTORY, "chegou ao getParcelableArrayList")
+         }
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Histórico"
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.i(TAGHISTORY,"onCreateView invocado")
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_history, container, false)
@@ -46,7 +48,8 @@ class HistoryFragment : Fragment() {
         fun newInstance(operations: ArrayList<OperationUi>) =
             HistoryFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelableArrayList(ARG_OPERATIONS,operations)
+                    Log.i(TAGHISTORY, "newInstance invocado")
+                    putParcelableArrayList(ARG_OPERATIONS, operations)
                 }
             }
     }
@@ -54,12 +57,13 @@ class HistoryFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.i(TAGHISTORY,"onStart invocado")
+        Log.i(TAGHISTORY, operations.toString())
         binding.historic.layoutManager = LinearLayoutManager(activity as Context)
         binding.historic.adapter = adapter
     }
 
     private fun onOperationClick(operation: String) {
-        //parentFragment.
+        //childFragmentManager.
         //Toast.makeText(context,operation, Toast.LENGTH_LONG).show()
     }
 

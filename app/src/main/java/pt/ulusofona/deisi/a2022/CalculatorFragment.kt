@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import net.objecthunter.exp4j.ExpressionBuilder
 import pt.ulusofona.deisi.a2022.databinding.FragmentCalculatorBinding
 
+private const val ARG_OPERATIONS = "operations"
+
 class CalculatorFragment : Fragment() {
 
     private val TAG2 = CalculatorFragment::class.java.simpleName
-    private val operations = ArrayList<OperationUi>()
+    private var operations = ArrayList<OperationUi>()
     private val adapter = HistoryAdapter(
             ::onOperationClick,
             ::onLongOperationClick,
@@ -24,7 +26,15 @@ class CalculatorFragment : Fragment() {
     )
     private lateinit var binding: FragmentCalculatorBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            Log.i(TAG2,"getParcelableArrayList")
+            operations = it.getParcelableArrayList(ARG_OPERATIONS)!!
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Calculadora"
         val view = inflater.inflate(R.layout.fragment_calculator, container, false)
@@ -75,10 +85,10 @@ class CalculatorFragment : Fragment() {
 
     private fun onClickEquals(){
         Log.i(TAG2, "Click no botão =")
-        val text_visor_data = binding.textVisor.text.toString()
-        val expression = ExpressionBuilder(text_visor_data).build()
+        val textVisorData = binding.textVisor.text.toString()
+        val expression = ExpressionBuilder(textVisorData).build()
         val result = expression.evaluate().toString()
-        saveResult(text_visor_data,result)
+        saveResult(textVisorData,result)
         binding.textVisor.text = result
         Log.i(TAG2,"O resultado da expressão é ${binding.textVisor.text}")
     }
@@ -112,6 +122,17 @@ class CalculatorFragment : Fragment() {
 
     private fun onLongOperationClick(timeStamp: String){
         Toast.makeText(context,timeStamp, Toast.LENGTH_LONG).show()
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(operations: ArrayList<OperationUi>) =
+            CalculatorFragment().apply {
+                arguments = Bundle().apply {
+                    Log.i(TAG2,"newInstance invocado")
+                    putParcelableArrayList(ARG_OPERATIONS,operations)
+                }
+            }
     }
 
 }
