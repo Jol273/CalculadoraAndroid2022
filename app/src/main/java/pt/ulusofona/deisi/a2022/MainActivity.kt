@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
     private lateinit var binding: ActivityMainBinding
-    private val operations = ArrayList<OperationUi>()
+    private val operations: ArrayList<OperationUi> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "o método onCreate foi invocado")

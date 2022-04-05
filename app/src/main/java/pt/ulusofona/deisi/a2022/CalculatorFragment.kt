@@ -19,11 +19,7 @@ class CalculatorFragment : Fragment() {
 
     private val TAG2 = CalculatorFragment::class.java.simpleName
     private var operations = ArrayList<OperationUi>()
-    private val adapter = HistoryAdapter(
-            ::onOperationClick,
-            ::onLongOperationClick,
-            operations
-    )
+    private lateinit var adapter : HistoryAdapter
     private lateinit var binding: FragmentCalculatorBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +28,11 @@ class CalculatorFragment : Fragment() {
             Log.i(TAG2,"getParcelableArrayList")
             operations = it.getParcelableArrayList(ARG_OPERATIONS)!!
         }
+        adapter = HistoryAdapter(
+                ::onOperationClick,
+                ::onLongOperationClick,
+                operations
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

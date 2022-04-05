@@ -18,20 +18,21 @@ class HistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentHistoryBinding
     private val TAGHISTORY = HistoryFragment::class.java.simpleName
-    private var operations: ArrayList<OperationUi> = ArrayList<OperationUi>()
-    private val adapter = HistoryAdapter(
-            ::onOperationClick,
-            ::onLongOperationClick,
-            operations
-    )
+    private var operations: ArrayList<OperationUi> = ArrayList()
+    private lateinit var adapter: HistoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             operations = it.getParcelableArrayList(ARG_OPERATIONS)!!
-            //Log.i(TAGHISTORY, "chegou ao getParcelableArrayList")
          }
+        adapter =
+            HistoryAdapter(
+                ::onOperationClick,
+                ::onLongOperationClick,
+                operations
+        )
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Histórico"
     }
 
@@ -57,7 +58,6 @@ class HistoryFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.i(TAGHISTORY,"onStart invocado")
-        Log.i(TAGHISTORY, operations.toString())
         binding.historic.layoutManager = LinearLayoutManager(activity as Context)
         binding.historic.adapter = adapter
     }
