@@ -61,11 +61,10 @@ class MainActivity : AppCompatActivity() {
                 NavigationManager.goToCalculatorFragment(
                         supportFragmentManager, operations
                 )
-            R.id.nav_history -> {
+            R.id.nav_history ->
                 NavigationManager.goToHistoryFragment(
                         supportFragmentManager, operations
                 )
-            }
         }
         binding.drawer.closeDrawer(GravityCompat.START)
         return true

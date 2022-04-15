@@ -62,9 +62,8 @@ class HistoryFragment : Fragment() {
         binding.historic.adapter = adapter
     }
 
-    private fun onOperationClick(operation: String) {
-        //childFragmentManager.
-        //Toast.makeText(context,operation, Toast.LENGTH_LONG).show()
+    private fun onOperationClick(operation: OperationUi) {
+        NavigationManager.goToOperationDetailFragment(activity!!.supportFragmentManager,operation)
     }
 
     private fun onLongOperationClick(timeStamp: String){

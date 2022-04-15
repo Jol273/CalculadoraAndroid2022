@@ -9,8 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
-import net.objecthunter.exp4j.ExpressionBuilder
 import pt.ulusofona.deisi.a2022.databinding.FragmentCalculatorBinding
 
 private const val ARG_OPERATIONS = "operations"
@@ -20,14 +21,16 @@ class CalculatorFragment : Fragment() {
     private val TAG2 = CalculatorFragment::class.java.simpleName
     private var operations = ArrayList<OperationUi>()
     private lateinit var adapter : HistoryAdapter
+
     private lateinit var binding: FragmentCalculatorBinding
+    private lateinit var viewModel: CalculatorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+        /*arguments?.let {
             Log.i(TAG2,"getParcelableArrayList")
             operations = it.getParcelableArrayList(ARG_OPERATIONS)!!
-        }
+        }*/
         adapter = HistoryAdapter(
                 ::onOperationClick,
                 ::onLongOperationClick,
@@ -38,8 +41,12 @@ class CalculatorFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Calculadora"
-        val view = inflater.inflate(R.layout.fragment_calculator, container, false)
+        val view = inflater.inflate(
+            R.layout.fragment_calculator, container, false
+        )
         binding = FragmentCalculatorBinding.bind(view)
+        viewModel = ViewModelProvider(this).get(CalculatorViewModel::class.java)
+        binding.textVisor.text = viewModel.getDisplayValue()
         return binding.root
     }
 
@@ -49,12 +56,13 @@ class CalculatorFragment : Fragment() {
         binding.rvHistoric?.adapter = adapter
 
         binding.button0.setOnClickListener { onClickSymbol("0") }
-        binding.button00?.setOnClickListener { onClickSymbol("00") }
         binding.button1.setOnClickListener { onClickSymbol("1") }
         binding.button2.setOnClickListener { onClickSymbol("2") }
         binding.button3.setOnClickListener { onClickSymbol("3") }
         binding.button4.setOnClickListener { onClickSymbol("4") }
         binding.button5.setOnClickListener { onClickSymbol("5") }
+
+        binding.button00?.setOnClickListener { onClickSymbol("00") }
         binding.button6.setOnClickListener { onClickSymbol("6") }
         binding.button7?.setOnClickListener { onClickSymbol("7") }
         binding.button8?.setOnClickListener { onClickSymbol("8") }
@@ -66,49 +74,30 @@ class CalculatorFragment : Fragment() {
         binding.buttonMultiplication.setOnClickListener { onClickSymbol("*") }
         binding.buttonDivision.setOnClickListener { onClickSymbol("/") }
         binding.buttonDot.setOnClickListener { onClickSymbol(".") }
-        binding.buttonEquals.setOnClickListener { onClickEquals() }
         binding.buttonBackspace.setOnClickListener { onClickBackspace() }
         binding.buttonClear.setOnClickListener { onClickClear() }
+        binding.buttonEquals.setOnClickListener { onClickEquals() }
     }
 
     private fun onClickSymbol(symbol: String){
         Log.i(TAG2,"Click no botão $symbol")
-        if (binding.textVisor.text == "0") {
-            binding.textVisor.text = symbol
-        } 
-        else if (symbol == "." || symbol == "+"|| symbol == "-"|| symbol == "/"|| symbol == "*") {
-            binding.textVisor.append(symbol)
-        } 
-        else {
-            binding.textVisor.append(symbol)
-        }
+        binding.textVisor.text = viewModel.onClickSymbol(symbol)
     }
 
     private fun onClickEquals(){
         Log.i(TAG2, "Click no botão =")
-        val textVisorData = binding.textVisor.text.toString()
-        val expression = ExpressionBuilder(textVisorData).build()
-        val result = expression.evaluate().toString()
-        saveResult(textVisorData,result)
-        binding.textVisor.text = result
+        binding.textVisor.text = viewModel.onClickEquals()
         Log.i(TAG2,"O resultado da expressão é ${binding.textVisor.text}")
     }
 
     private fun onClickClear(){
         Log.i(TAG2,"Click no botão C")
-        binding.textVisor.text = "0"
-        Log.i(TAG2,"texto no visor: ${binding.textVisor.text}")
+        binding.textVisor.text = viewModel.onClickClear()
     }
 
     private fun onClickBackspace(){
         Log.i(TAG2, "Click no botão backspace")
-        if (binding.textVisor.text.length == 1){
-            binding.textVisor.text = ""
-            Log.i(TAG2,"${binding.textVisor.text}")
-        } else{
-            binding.textVisor.text = binding.textVisor.text.dropLast(1)
-            Log.i(TAG2,"${binding.textVisor.text}")
-        }
+        binding.textVisor.text = viewModel.onClickBackSpace()
     }
 
     private fun saveResult(expression: String, result: String){
@@ -117,15 +106,15 @@ class CalculatorFragment : Fragment() {
         Log.i(TAG2,"update items invocado")
     }
 
-    private fun onOperationClick(operation: String) {
-        Toast.makeText(context,operation, Toast.LENGTH_LONG).show()
+    private fun onOperationClick(operation: OperationUi) {
+        NavigationManager.goToOperationDetailFragment(activity!!.supportFragmentManager,operation)
     }
 
     private fun onLongOperationClick(timeStamp: String){
         Toast.makeText(context,timeStamp, Toast.LENGTH_LONG).show()
     }
 
-    companion object {
+    /*companion object {
         @JvmStatic
         fun newInstance(operations: ArrayList<OperationUi>) =
             CalculatorFragment().apply {
@@ -134,6 +123,6 @@ class CalculatorFragment : Fragment() {
                     putParcelableArrayList(ARG_OPERATIONS,operations)
                 }
             }
-    }
+    }*/
 
 }

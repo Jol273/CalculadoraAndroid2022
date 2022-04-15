@@ -31,6 +31,15 @@ class OperationDetailFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        val parts = operation.toString().split("=")
+        binding.expression.text  = parts[0]
+        binding.result.text = parts[1]
+        binding.creationDate.text = operation?.callTimeStamp()
+
+    }
+
 
     companion object {
         @JvmStatic

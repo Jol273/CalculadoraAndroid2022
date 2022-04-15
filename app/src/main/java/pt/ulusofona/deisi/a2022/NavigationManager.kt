@@ -13,12 +13,15 @@ object NavigationManager {
     }
 
     fun goToCalculatorFragment(fm: FragmentManager, operations: ArrayList<OperationUi>){
+        placeFragment(fm,CalculatorFragment())
         //placeFragment(fm, CalculatorFragment.newInstance(operations))
-        placeFragment(fm, CalculatorFragment.newInstance(operations))
+    }
+
+    fun goToOperationDetailFragment(fm: FragmentManager, operationUi: OperationUi){
+        placeFragment(fm, OperationDetailFragment.newInstance(operationUi))
     }
 
     /*fun goToCalculatorFragment(fm: FragmentManager){
-        //placeFragment(fm, CalculatorFragment.newInstance(operations))
         placeFragment(fm, CalculatorFragment())
     }*/
 
