@@ -28,4 +28,8 @@
     <string name="expression">Expressão:</string>
     <string name="result">Resultado:</string>
     <string name="creationDate">Data de criação:</string>
+    <string name="uuid">UUID</string>
+    <string name="deleting">A eliminar...</string>
+    <string name="registry_saved">Registo guardado</string>
+    <string name="no_history_available">Sem histórico disponível</string>
 </resources>

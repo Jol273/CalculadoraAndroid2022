@@ -8,9 +8,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historic"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        tools:listitem="@layout/item_expression"
+        android:visibility="gone"
         />
+
+    <TextView
+        android:id="@+id/textNoHistoryAvailable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/no_history_available"/>
 
 </FrameLayout>

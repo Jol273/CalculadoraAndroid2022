@@ -9,8 +9,8 @@ import kotlin.reflect.KFunction1
 
 class HistoryAdapter(
     private val onOperationClick: (OperationUi) -> Unit,
-    private val onLongOperationClick: (String) -> Unit,
-    private var items: ArrayList<OperationUi>,
+    private val onLongOperationClick: (OperationUi) -> Boolean,
+    private var items: List<OperationUi> = listOf(),
         ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     class HistoryViewHolder(val binding: ItemExpressionBinding) : RecyclerView.ViewHolder(binding.root)
@@ -24,24 +24,16 @@ class HistoryAdapter(
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.itemView.setOnClickListener{
-            onOperationClick(
-                items.get(position)
-            )
-        }
-        val parts = items.get(position).toString().split("=")
-        holder.binding.textExpression.text = parts[0]
-        holder.binding.textResult.text = parts[1]
+        holder.binding.textExpression.text = items[position].expression
+        holder.binding.textResult.text = items[position].result.toString()
 
-        holder.itemView.setOnLongClickListener{
-            onLongOperationClick(items.get(position).callTimeStamp())
-            true
-        }
+        holder.itemView.setOnClickListener{ onOperationClick(items[position]) }
+        holder.itemView.setOnLongClickListener{ onLongOperationClick(items[position]) }
     }
 
     override fun getItemCount() = items.size
 
-    fun updateItems(items: ArrayList<OperationUi>){
+    fun updateItems(items: List<OperationUi>){
         this.items = items
         notifyDataSetChanged()
     }

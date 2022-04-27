@@ -21,11 +21,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //operations.add(OperationUi("1+1","2.0"))
 
         if(!screenRotated(savedInstanceState)){
-            NavigationManager.goToCalculatorFragment(supportFragmentManager, operations)
-            //NavigationManager.goToCalculatorFragment(supportFragmentManager)
+            //NavigationManager.goToCalculatorFragment(supportFragmentManager, operations)
+            NavigationManager.goToCalculatorFragment(supportFragmentManager)
         }
     }
 
@@ -33,9 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         setSupportActionBar(binding.toolbar)
         setupDrawerMenu()
-        operations.add(OperationUi("1+1","2.0"))
-        operations.add(OperationUi("1*3","3.0"))
-        NavigationManager.goToCalculatorFragment(supportFragmentManager, operations)
+        //NavigationManager.goToCalculatorFragment(supportFragmentManager, operations)
     }
 
     private fun screenRotated(savedInstanceState: Bundle?): Boolean {
@@ -57,14 +54,10 @@ class MainActivity : AppCompatActivity() {
     private fun onClickNavigationItem(item: MenuItem): Boolean{
 
         when(item.itemId){
-            R.id.nav_calculator ->
-                NavigationManager.goToCalculatorFragment(
-                        supportFragmentManager, operations
-                )
-            R.id.nav_history ->
-                NavigationManager.goToHistoryFragment(
-                        supportFragmentManager, operations
-                )
+            R.id.nav_calculator -> NavigationManager.goToCalculatorFragment(supportFragmentManager)
+                //NavigationManager.goToCalculatorFragment(supportFragmentManager, operations)
+            R.id.nav_history -> NavigationManager.goToHistoryFragment(supportFragmentManager)
+                //NavigationManager.goToHistoryFragment(supportFragmentManager, operations)
         }
         binding.drawer.closeDrawer(GravityCompat.START)
         return true
@@ -72,21 +65,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         when {
-            binding.drawer.isDrawerOpen(GravityCompat.START) -> {
-                binding.drawer.closeDrawer(GravityCompat.START)
-            }
-            supportFragmentManager.backStackEntryCount == 1 -> {
-                finish()
-            }
-            else -> {
-                super.onBackPressed()
-            }
+            binding.drawer.isDrawerOpen(GravityCompat.START) -> binding.drawer.closeDrawer(GravityCompat.START)
+            supportFragmentManager.backStackEntryCount == 1 -> finish()
+            else -> super.onBackPressed()
         }
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         Log.i(TAG,"o método onDestroy foi invocado")
         super.onDestroy()
-    }
+    }*/
 
 }

@@ -12,21 +12,24 @@ object NavigationManager {
         transition.commit()
     }
 
-    fun goToCalculatorFragment(fm: FragmentManager, operations: ArrayList<OperationUi>){
+    /*fun goToCalculatorFragment(fm: FragmentManager, operations: ArrayList<OperationUi>){
         placeFragment(fm,CalculatorFragment())
         //placeFragment(fm, CalculatorFragment.newInstance(operations))
-    }
-
-    fun goToOperationDetailFragment(fm: FragmentManager, operationUi: OperationUi){
-        placeFragment(fm, OperationDetailFragment.newInstance(operationUi))
-    }
-
-    /*fun goToCalculatorFragment(fm: FragmentManager){
-        placeFragment(fm, CalculatorFragment())
     }*/
 
-
-    fun goToHistoryFragment(fm: FragmentManager, operations: ArrayList<OperationUi>){
-        placeFragment(fm, HistoryFragment.newInstance(operations))
+    fun goToOperationDetailFragment(fm: FragmentManager, operation: OperationUi){
+        placeFragment(fm, OperationDetailFragment.newInstance(operation))
     }
+
+    fun goToCalculatorFragment(fm: FragmentManager){
+        placeFragment(fm, CalculatorFragment())
+    }
+
+    fun goToHistoryFragment(fm: FragmentManager){
+        placeFragment(fm, HistoryFragment())
+    }
+
+    /*fun goToHistoryFragment(fm: FragmentManager, operations: ArrayList<OperationUi>){
+        placeFragment(fm, HistoryFragment.newInstance(operations))
+    }*/
 }

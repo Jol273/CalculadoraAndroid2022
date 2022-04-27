@@ -8,21 +8,35 @@ class CalculatorViewModel : ViewModel() {
     private val model = Calculator()
     private val TAG = CalculatorViewModel::class.java.simpleName
 
+
     fun getDisplayValue(): String {
-        Log.i(TAG,model.display)
-        return model.display
+        return model.expression
     }
 
     fun onClickSymbol(symbol: String) :String{
         return model.insertSymbol(symbol)
     }
 
-    fun onClickEquals(): String {
-        val result = model.performOperation()
-        return result.toString()
+    fun onClickClear() = model.clear()
+
+    fun onClickBackspace() = model.deleteLastSymbol()
+
+    fun onClickGetLastOperation(onFinished: (String) -> Unit){
+        model.getLastOperation(onFinished)
     }
 
-    fun onClickClear() = model.clearDisplay()
+    fun onGetHistory(onFinished: (List<Operation>) -> Unit) {
+        model.getHistory(onFinished)
+    }
 
-    fun onClickBackSpace() = model.backSpace()
+    fun onDeleteOperation(uuid: String, onSuccess: () -> Unit) {
+        model.deleteOperation(uuid, onSuccess)
+    }
+
+    fun onClickEquals(onSaved: () -> Unit): String {
+        model.performOperation(onSaved)
+        val result =  getDisplayValue().toDouble()
+        return if(result % 1 == 0.0) result.toLong().toString() else result.toString()
+    }
+
 }

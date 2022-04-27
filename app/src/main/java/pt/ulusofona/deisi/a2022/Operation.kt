@@ -1,8 +1,11 @@
 package pt.ulusofona.deisi.a2022
 
-import java.util.Date
+import java.util.*
 
-class Operation(val expression: String, val result: Double) {
+class Operation(
+        val uuid: String = UUID.randomUUID().toString(),
+        val expression: String,
+        val result: Double) {
 
-    val timeStamo: Long = Date().time
+    val timeStamped: Long = Date().time
 }

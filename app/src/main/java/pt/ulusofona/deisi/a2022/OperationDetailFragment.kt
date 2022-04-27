@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import pt.ulusofona.deisi.a2022.databinding.FragmentOperationDetailBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
-private const val ARG_PARAM1 = "param1"
+private const val ARG_OPERATION = "param1"
 
 class OperationDetailFragment : Fragment() {
 
@@ -19,13 +21,14 @@ class OperationDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            operation = it.getParcelable(ARG_PARAM1)
+            operation = it.getParcelable(ARG_OPERATION)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
+        operation?.let { (requireActivity() as AppCompatActivity).supportActionBar?.title = it.expression }
         val view = inflater.inflate(R.layout.fragment_operation_detail, container, false)
         binding = FragmentOperationDetailBinding.bind(view)
         return binding.root
@@ -33,20 +36,27 @@ class OperationDetailFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val parts = operation.toString().split("=")
-        binding.expression.text  = parts[0]
+        val sdf = SimpleDateFormat("dd/MM/yyyy - HH:mm:ss")
+        operation?.let {
+            binding.textUuid.text = it.uuid
+            binding.expression.text = it.expression
+            binding.result.text = it.result.toString()
+            binding.creationDate.text = sdf.format(Date(it.timestamp))
+        }
+        //val parts = operation.toString().split("=")
+        /*binding.expression.text  = parts[0]
         binding.result.text = parts[1]
-        binding.creationDate.text = operation?.callTimeStamp()
+        binding.creationDate.text = operation?.callTimeStamp()*/
 
     }
 
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: OperationUi) =
+        fun newInstance(operation: OperationUi) =
             OperationDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PARAM1, param1)
+                    putParcelable(ARG_OPERATION, operation)
                     parentFragment
                 }
             }

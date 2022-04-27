@@ -3,10 +3,9 @@ package pt.ulusofona.deisi.a2022
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
+/*
 @Parcelize
 class OperationUi(private val expression: String, private val result: String,
                   private val currentTime: String = SimpleDateFormat("dd/MM/yyyy - hh:mm:ss",Locale.UK).format(Date())
@@ -20,4 +19,9 @@ class OperationUi(private val expression: String, private val result: String,
     fun callTimeStamp(): String{
         return currentTime
     }
-}
+}*/
+
+@Parcelize
+data class OperationUi(
+        val uuid: String, val expression: String, val result: Double, val timestamp: Long
+) : Parcelable
