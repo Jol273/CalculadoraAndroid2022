@@ -1,12 +1,14 @@
 package pt.ulusofona.deisi.a2022
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val model = Calculator()
-    private val TAG = CalculatorViewModel::class.java.simpleName
+    private val model = Calculator(
+        CalculatorDatabase.getInstance(application).operationDao()
+    )
+    //private val TAG = CalculatorViewModel::class.java.simpleName
 
 
     fun getDisplayValue(): String {
@@ -25,7 +27,7 @@ class CalculatorViewModel : ViewModel() {
         model.getLastOperation(onFinished)
     }
 
-    fun onGetHistory(onFinished: (List<Operation>) -> Unit) {
+    fun onGetHistory(onFinished: (List<OperationUi>) -> Unit) {
         model.getHistory(onFinished)
     }
 

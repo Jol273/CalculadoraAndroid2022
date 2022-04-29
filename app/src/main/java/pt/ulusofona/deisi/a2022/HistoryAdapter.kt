@@ -26,6 +26,7 @@ class HistoryAdapter(
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.binding.textExpression.text = items[position].expression
         holder.binding.textResult.text = items[position].result.toString()
+        holder.binding.textUuid.text = items[position].uuid
 
         holder.itemView.setOnClickListener{ onOperationClick(items[position]) }
         holder.itemView.setOnLongClickListener{ onLongOperationClick(items[position]) }

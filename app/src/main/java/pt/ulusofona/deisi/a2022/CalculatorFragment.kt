@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +21,6 @@ private const val ARG_OPERATIONS = "operations"
 class CalculatorFragment : Fragment() {
 
     private val TAG2 = CalculatorFragment::class.java.simpleName
-    private var operations = ArrayList<OperationUi>()
     private var adapter = HistoryAdapter(
     ::onOperationClick,
     ::onLongOperationClick)
@@ -130,8 +128,8 @@ class CalculatorFragment : Fragment() {
     }
 
 
-    private fun updateHistory(operations: List<Operation>){
-        val history = operations.map { OperationUi(it.uuid, it.expression, it.result, it.timeStamped) }
+    private fun updateHistory(operations: List<OperationUi>){
+        val history = operations.map { OperationUi(it.uuid, it.expression, it.result, it.timestamp) }
         CoroutineScope(Dispatchers.Main).launch {
             adapter.updateItems(history)
         }

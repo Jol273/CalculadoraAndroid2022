@@ -4,13 +4,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
+import java.util.*
 
-class Calculator {
+class Calculator(private val dao: OperationDao) {
 
     var expression: String = "0"
-    private val history = mutableListOf<Operation>()
-
-    //fun getHistory() = history as ArrayList<OperationUi>
+    private val history = mutableListOf<OperationRoom>()
 
     fun insertSymbol(symbol: String) : String{
         expression = if (expression == "0") symbol else "$expression$symbol"
@@ -29,7 +28,7 @@ class Calculator {
 
     fun deleteOperation(uuid: String, onSuccess: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            Thread.sleep(10 * 1000)
+            Thread.sleep(1 * 1000)
             val operation = history.find { it.uuid == uuid }
             history.remove(operation)
             onSuccess()
@@ -38,34 +37,39 @@ class Calculator {
 
     fun getLastOperation(onFinished: (String) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            Thread.sleep(10 * 1000)
+            Thread.sleep(1 * 1000)
             expression = if (history.size > 0) history[history.size - 1].expression else expression
             onFinished(expression)
         }
     }
 
-    fun performOperation(onSaved: () -> Unit) {
+    fun performOperation(onFinished: () -> Unit) {
         val expressionBuilder = ExpressionBuilder(expression).build()
         val result = expressionBuilder.evaluate()
-        val operation = Operation(expression = expression, result = result)
-        //history.add(Operation(expression,result))
-        expression = result.toString()
-        CoroutineScope(Dispatchers.IO).launch {
-            addToHistory(operation)
-            onSaved()
-        }
-    }
 
-    fun getHistory(onFinished: (List<Operation>) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            Thread.sleep(10 * 1000)
-            onFinished(history.toList())
-        }
-    }
-
-    private fun addToHistory(operation: Operation) {
-        Thread.sleep(10 * 1000)
+        val operation = OperationRoom(expression = expression, result = result, timestamp = Date().time)
         history.add(operation)
+        expression = result.toString()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            dao.insert(operation)
+            addToHistory(operation)
+            onFinished()
+        }
+    }
+
+    fun getHistory(onFinished: (List<OperationUi>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val operations = dao.getAll()
+            onFinished(operations.map {
+                OperationUi(it.uuid,it.expression, it.result, it.timestamp)
+            })
+        }
+    }
+
+    private fun addToHistory(operationRoom: OperationRoom) {
+        Thread.sleep(1 * 1000)
+        history.add(operationRoom)
     }
 
 
